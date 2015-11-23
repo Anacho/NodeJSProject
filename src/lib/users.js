@@ -7,13 +7,13 @@ module.exports = {
 		}
 		callback(user);
 	},
-	
+
 	get: function(id, callback) {
 		// get a user
 		var user = {
 			name: "debesson",
 			id: id
 		}
-		callback(id);
+		callback(user);
 	}
 }

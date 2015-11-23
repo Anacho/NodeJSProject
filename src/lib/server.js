@@ -3,14 +3,14 @@ var users = require('./users.js');
 
 http.createServer(function (req, res) {
 	var path = req.url.split("/").splice(1, 2)
-	
+
 	if(path[0] == "get")
 	{
 		users.get(path[1], function (user) {
 			var response = {
 				info: "here's your user!",
 				user: user
-			}		
+			}
 			res.writeHead(200, {content: 'application/json'});
 			res.end(JSON.stringify(response));
 		})
