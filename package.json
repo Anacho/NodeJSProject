@@ -1,21 +1,19 @@
 {
-	"name": "asynchronous server technologies",
-	"description": "class @ ece",
-	"version": "0.0.1",
-	"author": {
-		"name": "debesson",
-		"website": "github.com/anacho"
-	},
-	"website": "adaltas.com",
-	"dependencies": {
-		"mymodule": "1.2.y",
-		"mymodule": "~1.2.x",
-		"mymodule": ">=1.2.z",
-		"mymodule": "*",
-		"mylocalmodule": "file:./server.js",
-		"mygithubmodule": "git_account/module#cejijxsi"
-	},
-	"devDependencies": {
-		"test-module": "*"
-	}
+  "name": "asynchronous server technologies",
+  "description": "class @ ece",
+  "version": "0.0.1",
+  "author": {
+    "name": "debesson",
+    "website": "github.com/anacho"
+  },
+  "website": "adaltas.com",
+  "dependencies": {
+    "coffee-script": "^1.10.0",
+    "mygithubmodule": "git_account/module#cejijxsi",
+    "mylocalmodule": "file:./server.js",
+    "mymodule": "*"
+  },
+  "devDependencies": {
+    "test-module": "*"
+  }
 }
