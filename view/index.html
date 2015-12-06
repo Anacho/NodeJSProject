@@ -1,0 +1,17 @@
+<!DOCTYPE html><head><title></title><script src="/js/jquery-2.1.4.min.js"></script><script src="/js/bootstrap.min.js"></script><link rel="stylesheet" href="/css/bootstrap.min.css"></head><body><div class="container"><div class="col-md-6 col-md-offset-3"><button id="get-metrics" class="btn btn-success">Hello world</button><div id="content"></div></div></div><script>(function() {
+  $('#get-metrics').click(function(e) {
+    e.preventDefault();
+    return $.getJSON('/metrics.json', function(data) {
+      var c, i, len, metric;
+      $('#content').empty();
+      c = "";
+      for (i = 0, len = data.length; i < len; i++) {
+        metric = data[i];
+        c += "<p>timestamp: " + metric.timestamp + "<br/>value: " + metric.value + "</p>";
+      }
+      return $('#content').append(c);
+    });
+  });
+
+}).call(this);
+</script></body>

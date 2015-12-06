@@ -1,2 +1,2 @@
 cd ../src/lib/
-mocha
+mocha --compilers coffee:coffee-script/register test/

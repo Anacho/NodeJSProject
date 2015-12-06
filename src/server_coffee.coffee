@@ -1,7 +1,6 @@
 # Assignment:
-
 http = require 'http'
-users = require './users.js'
+users = require '../lib/users.js'
 
 http.createServer (req, res) ->
 	path = req.url.split("/").splice 1, 2
