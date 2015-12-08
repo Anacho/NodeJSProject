@@ -1,8 +1,10 @@
+db = require('./db') "#{__dirname}/../db/user"
+
 module.exports =
   save: (name, callback) ->
-    user =
-      id: "2222"
-      name: name
+    user = {}
+    rs = db.createReadStream
+      
     callback user
 
   get: (id, callback) ->
