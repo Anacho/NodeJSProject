@@ -1,31 +1,20 @@
+#db = require('./db') "C:\\Users\\ThienAn\\Documents\\GitHub\\NodeJSProject\\db\\metrics"
 db = require('./db') "#{__dirname}/../db/metrics"
+
 module.exports =
   ###
   `get()`
   ------
-
   Returns some hard coded metrics
   ###
-  get: () ->
-    return [
-      timestamp: new Date('2015-12-01 10:30 UTC').getTime(),
-      value: 26
-    ,
-      timestamp: new Date('2015-12-01 10:35 UTC').getTime(),
-      value: 23
-    ,
-      timestamp: new Date('2015-12-01 10:40 UTC').getTime(),
-      value: 20
-    ,
-      timestamp: new Date('2015-12-01 10:45 UTC').getTime(),
-      value: 19
-    ,
-      timestamp: new Date('2015-12-01 10:50 UTC').getTime(),
-      value: 18
-    ,
-      timestamp: new Date('2015-12-01 10:55 UTC').getTime(),
-      value: 20
-    ]
+  get: (callback) ->
+    metrics = {}
+    rs = db.createReadStream
+      gte: "metrics"
+    rs.on 'error', callback
+    rs.on 'data', (data) ->
+      metrics = data.value
+    return metrics
 
   ###
   `save(id, metrics, cb)`
@@ -45,3 +34,10 @@ module.exports =
       {timestamp, value} = m
       ws.write key: "metric:#{id}:#{timestamp}", value: value
     ws.end()
+
+    ###
+    'remove(id)'
+    Remove the metric with the given id
+
+    ###
+    remove: (id) ->
