@@ -3,29 +3,23 @@ module.exports =
   ###
   `get()`
   ------
-
-  Returns some hard coded metrics
   ###
-  get: () ->
-    return [
-      timestamp: new Date('2015-12-01 10:30 UTC').getTime(),
-      value: 26
-    ,
-      timestamp: new Date('2015-12-01 10:35 UTC').getTime(),
-      value: 23
-    ,
-      timestamp: new Date('2015-12-01 10:40 UTC').getTime(),
-      value: 20
-    ,
-      timestamp: new Date('2015-12-01 10:45 UTC').getTime(),
-      value: 19
-    ,
-      timestamp: new Date('2015-12-01 10:50 UTC').getTime(),
-      value: 18
-    ,
-      timestamp: new Date('2015-12-01 10:55 UTC').getTime(),
-      value: 20
-    ]
+  get: (id, callback) ->
+    metric = {}
+    rs = db.createReadStream
+      lte: "value:#{id}"
+      gte: "value:#{id}"
+    rs.on 'data', (data) ->
+      [_, _id] = data.key.split ':'
+      [_timestamp, _value] = data.value.split ':'
+      metric =
+        id: _id
+        timestamp: _timestamp
+        value: _value
+
+    rs.on 'error', callback
+    rs.on 'close', ->
+      callback metric
 
   ###
   `save(id, metrics, cb)`
@@ -43,5 +37,5 @@ module.exports =
     ws.on 'close', callback
     for m in metrics
       {timestamp, value} = m
-      ws.write key: "metric:#{id}:#{timestamp}", value: value
+      ws.write key: "metric:#{id}:#{id}", timestamp: timestamp, value: value
     ws.end()
