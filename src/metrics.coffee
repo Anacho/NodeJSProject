@@ -7,16 +7,23 @@ module.exports =
   get: (id, callback) ->
     metric = {}
     rs = db.createReadStream
-      gte: "metric:#{id}"
-      lte: "metric:#{id}"
+      gte: "metric:#{id}:"
+      lt: "metric:#{id};"
     rs.on 'data', (data) ->
-      [_, _id] = data.key.split ':'
-      [ _value, _timestamp] = data.value.split ':'
+      [_, _id, _timestamp] = data.key.split ':'
+      [ _value] = data.value.split ':'
       metric =
         id: _id
         value: _value
-        timestamp: _timestamp
-
+        timestamp: _timestamp*1
+        ###
+        date = new Date(_timestamp*1)
+        hour: date.getUTCHours()
+        min: date.getUTCMinutes()
+        day: date.getUTCDay()
+        month: date.getUTCMonth()
+        year: date.getUTCFullYear()
+        ###
     rs.on 'error', callback
     rs.on 'close', ->
       callback metric
@@ -36,5 +43,5 @@ module.exports =
     ws.on 'error', callback
     ws.on 'close', callback
     for m in metrics
-      ws.write key: "metric:#{id}", value: "#{m.value}:#{m.timestamp}"
+      ws.write key: "metric:#{id}:#{m.timestamp}", value: "#{m.value}"
     ws.end()
