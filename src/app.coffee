@@ -48,6 +48,14 @@ app.get '/metrics.json', (req, res) ->
     if err then res.status(500).json err
     else res.status(200).send "User saved")
 
+app.get '/metrics.json/:id', (req, res) ->
+  metrics.get req.params.id, (metric) ->
+    response =
+      metric: metric
+    res.writeHead 200, 'Content-Type': 'application/json'
+    res.end JSON.stringify response
+
+
 app.get '/login', (req, res) ->
   username = "toto"
   user =  users.get(username, (err) ->
@@ -69,6 +77,16 @@ app.get '/delete/:username', (req, res) ->
       return console.log('Ooops!', err)
     console.log 'Great success dear leader!'
     return)
+
+app.post '/user/:name.json', (req, res) ->
+  users.save req.params.id, req.body, (err) ->
+    if err then res.status(500).json err
+    else res.status(200).send "User saved"
+
+app.post '/login/:name.json', (req, res) ->
+  users.login req.params.id, req.body, (err) ->
+    if err then res.statuts(500).json err
+    else res.statuts(200).send true
 
 app.post '/metric/:id.json', (req, res) ->
   metrics.save req.params.id, req.body, (err) ->

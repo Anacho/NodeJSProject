@@ -5,16 +5,30 @@ module.exports =
   ###
   `get()`
   ------
-  Returns some hard coded metrics
-  ###
-  get: (callback) ->
-    metrics = {}
+###
+  get: (id, callback) ->
+    metric = {}
     rs = db.createReadStream
-      gte: "metrics"
-    rs.on 'error', callback
+      gte: "metric:#{id}:"
+      lt: "metric:#{id};"
     rs.on 'data', (data) ->
-      metrics = data.value
-    return metrics
+      [_, _id, _timestamp] = data.key.split ':'
+      [ _value] = data.value.split ':'
+      metric =
+        id: _id
+        value: _value
+        timestamp: _timestamp*1
+        ###
+        date = new Date(_timestamp*1)
+        hour: date.getUTCHours()
+        min: date.getUTCMinutes()
+        day: date.getUTCDay()
+        month: date.getUTCMonth()
+        year: date.getUTCFullYear()
+        ###
+    rs.on 'error', callback
+    rs.on 'close', ->
+      callback metric
 
   ###
   `save(id, metrics, cb)`
@@ -31,8 +45,7 @@ module.exports =
     ws.on 'error', callback
     ws.on 'close', callback
     for m in metrics
-      {timestamp, value} = m
-      ws.write key: "metric:#{id}:#{timestamp}", value: value
+      ws.write key: "metric:#{id}:#{m.timestamp}", value: "#{m.value}"
     ws.end()
 
     ###
