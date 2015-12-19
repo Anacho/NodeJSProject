@@ -1,0 +1,21 @@
+views/login.jade
+extend layout
+
+block head
+  script(type="text/javascript" src="js/jquery-2.1.4.min.js" charset="utf-8")
+  script(type="text/javascript" src="js/bootstrap.min.js" charset="utf-8")
+  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  
+block content
+  div.container
+    ‪#‎form‬
+    h1 Please login to your account
+    hr
+    form#login(action='/login', method="post")
+      .form-group
+        label Username
+        input(type='text', name="username")
+      .form-group
+        label Password
+        input(type='password', name="password")
+      button.btn.btn-success.btn-block(type='button', href='/login') Login
