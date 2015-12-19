@@ -13,11 +13,11 @@ http.createServer (req, res) ->
 			res.writeHead 200, 'Content-Type': 'application/json'
 			res.end JSON.stringify response
 	else if path[0] is 'save'
-		metric = [new Date('2015-12-01 10:35 UTC').getTime(), 10]
-		metrics.save path[1], metric, (user) ->
+		metric = [{value:1337, timestamp:new Date('2015-12-01 10:35 UTC').getTime()}]
+		metrics.save path[1], metric, (metric) ->
 			response =
-				info: "user saved!"
-				user: user
+				info: "metric saved!"
+				metric: metric
 			res.writeHead 200, 'Content-Type': 'application/json'
 			res.end JSON.stringify response
 	else
