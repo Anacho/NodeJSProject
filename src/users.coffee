@@ -1,3 +1,5 @@
+#db = require('./db') "C:\\Users\\ThienAn\\Documents\\GitHub\\NodeJSProject\\db\\users"
+
 db = require('./db') "#{__dirname}/../db/user"
 
 module.exports =
