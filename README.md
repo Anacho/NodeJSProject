@@ -1,6 +1,5 @@
 # ECE - Internet nouvelle génération - Asynchronous Server Technologies
-## by Q. Debesson & TA. Le
-## Copyright (c) 2015 Copyright Holder All Rights Reserved.
+by Q. Debesson & TA. Le
 
 ## How to use
 
