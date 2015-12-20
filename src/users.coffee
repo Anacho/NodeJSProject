@@ -18,24 +18,17 @@ module.exports =
       user =
         name: name
         password: data.value
-    rs.on 'error', -> callback "Error : get users"
-    rs.on 'close', -> callback user
+    rs.on 'error', -> callback "Error"
+    rs.on 'close', -> callback null, user
 
+###
   login: (name, password, callback) ->
-    user = {}
-    user = this.get name, callback
-    console.log "#{user.password}"
-    if password == user.password
-      console.log "Login success"
-      true
-    console.log "T'es nul"
-    false
-
-
-###
-if(password == user.password)
-  console.log "true"
-  return true
-console.log "false"
-false
-###
+    this.get name, (err, data) ->
+      console.log "fonction get : #{data}"
+      
+      if password == data.user.password
+        console.log "true"
+        true
+      else
+        console.log "false"
+        false###

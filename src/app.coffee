@@ -77,11 +77,12 @@ app.post '/user/:name.json', (req, res) ->
     else res.status(200).send "User saved"
 
 app.post '/login', (req, res) ->
-  users.login req.body.username, req.body.password, (err) ->
-    if err then res.status(500).json err
+  users.get req.body.username, (err, data) ->
+    if err then throw err
+    unless req.body.password == data.password
+      res.redirect '/login'
     else
-      console.log "Log in success of #{req.body.username}"
-      res.redirect '/layout'
+      res.redirect '/'
 
 app.post '/signup', (req, res) ->
   users.save req.body.username, req.body.password, (err) ->
@@ -92,7 +93,7 @@ app.post '/signup', (req, res) ->
 
 app.post '/login/:name.json', (req, res) ->
   users.login req.params.id, req.body, (err) ->
-    if err then res.statuts(500).json err
+    if err then res.status(500).json err
     else res.status(200).send true
 
 app.post '/metric/:id.json', (req, res) ->
