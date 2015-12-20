@@ -19,7 +19,7 @@ LevelStore = require('level-session-store')(session)
 app = express()
 compile = (str, path) ->
   stylus(str).set('filename', path).use nib()
-  
+
 metrics = require './metrics'
 users = require './users'
 
@@ -34,7 +34,7 @@ app.use bodyparser.json()
 app.use bodyparser.urlencoded()
 app.use stylus.middleware
   src: "#{__dirname}/../public"
-  compile: compile
+  compile: this.compile
 app.use '/', express.static "#{__dirname}/../public"
 
 
