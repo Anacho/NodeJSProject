@@ -6,7 +6,7 @@ metrics = require '../lib/metrics.js'
 http.createServer (req, res) ->
 	path = req.url.split("/").splice 1, 2
 	if path[0] is 'get'
-		users.get path[1], (metric) ->
+		users.login path[1], "merignac33", (metric) ->
 			response =
 				info: "here's your metric!"
 				metric: metric
