@@ -18,7 +18,7 @@ module.exports =
       user =
         name: name
         password: data.value
-    rs.on 'error', -> callback "Error"
+    rs.on 'error', -> callback "Error : get users "
     rs.on 'close', -> callback user
 
   login: (name, password, callback) ->

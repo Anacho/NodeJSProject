@@ -43,8 +43,14 @@ app.use router
 app.get '/hello/:name', (req, res) ->
   res.status(200).send "Hello #{req.params.name}"
 
-app.get '/hello', (req, res) ->
-  res.status(200).send "Hi everyonee !!!"
+app.get '/signup', (req, res) ->
+  res.render 'signup'
+
+app.get '/login', (req, res) ->
+  res.render 'login'
+
+app.get '/layout', (req, res) ->
+  res.render 'layout'
 
 app.get '/metrics.json', (req, res) ->
   res.status(200).send metrics.get((err) ->
@@ -65,12 +71,6 @@ app.get '/delete/:username', (req, res) ->
     console.log 'Great success dear leader!'
     return)
 
-app.get '/signup', (req, res) ->
-  res.render 'signup'
-
-app.get '/login', (req, res) ->
-  res.render 'login'
-
 app.post '/user/:name.json', (req, res) ->
   users.save req.params.id, req.body, (err) ->
     if err then res.status(500).json err
@@ -80,7 +80,7 @@ app.post '/login', (req, res) ->
   users.login req.body.username, req.body.password, (err) ->
     if err then res.statuts(500).json err
     else
-      res.redirect 'hello'
+      res.redirect '/layout'
       res.statuts(200).send true
 
 app.post '/signup', (req, res) ->
@@ -88,7 +88,7 @@ app.post '/signup', (req, res) ->
     if err then res.status(500).json err
     else
       console.log "save user #{req.body.username}"
-      res.redirect 'hello'
+      res.redirect '/login'
 
 app.post '/login/:name.json', (req, res) ->
   users.login req.params.id, req.body, (err) ->
