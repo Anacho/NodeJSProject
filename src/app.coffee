@@ -34,7 +34,7 @@ app.use bodyparser.json()
 app.use bodyparser.urlencoded()
 app.use stylus.middleware
   src: "#{__dirname}/../public"
-  compile: compile
+  compile: this.compile
 app.use '/', express.static "#{__dirname}/../public"
 
 

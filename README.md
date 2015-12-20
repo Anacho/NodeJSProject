@@ -12,11 +12,14 @@ and then:
 `bin/start`
 At this moment, the server is on, and you can access it via [localhost](localhost:1889/).
 
+Note: style.css is generated from the stylus file at run time.
+
 ## Packages
 
 Here is a non-exaustive list of packages/modules/things we used in this project:
 - Coffee-script
 - Jade
+- Stylus
 - D3
 - Level
 - Express
