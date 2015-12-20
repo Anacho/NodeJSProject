@@ -6,15 +6,16 @@ metrics = require '../lib/metrics.js'
 http.createServer (req, res) ->
 	path = req.url.split("/").splice 1, 2
 	if path[0] is 'get'
-		metrics.get path[1], (metric) ->
+		users.get path[1], (metric) ->
 			response =
 				info: "here's your metric!"
 				metric: metric
 			res.writeHead 200, 'Content-Type': 'application/json'
 			res.end JSON.stringify response
 	else if path[0] is 'save'
+		password = "merignac33"
 		metric = [{value:1337, timestamp:Date.now()}]
-		metrics.save path[1], metric, (id) ->
+		users.save path[1], password, (id) ->
 			response =
 				info: "metric saved!"
 				id: id

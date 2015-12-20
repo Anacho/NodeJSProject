@@ -1,5 +1,3 @@
-#db = require('./db') "C:\\Users\\ThienAn\\Documents\\GitHub\\NodeJSProject\\db\\users"
-
 db = require('./db') "#{__dirname}/../db/user"
 
 module.exports =
@@ -12,13 +10,16 @@ module.exports =
     ws.end()
 
   get: (name, callback) ->
+    user = {}
     rs = db.createReadStream
-      gte: "metric:#{name}"
-      lte: "metric:#{name}"
+      gte: "user:#{name}"
+      lte: "user:#{name}"
     rs.on 'data', (data) ->
-      data.value
+      user =
+        name: name
+        password: data.value
     rs.on 'error', -> callback "Error"
-    rs.on 'close', -> callback "Error"
+    rs.on 'close', -> callback user
 
   login: (name, password, callback) ->
     if(password == this.get(name))
