@@ -14,9 +14,12 @@ express = require 'express'
 morgan = require 'morgan'
 bodyparser = require 'body-parser'
 session = require 'express-session'
+stylus = require 'stylus'
 LevelStore = require('level-session-store')(session)
 app = express()
-
+compile = (str, path) ->
+  stylus(str).set('filename', path).use nib()
+  
 metrics = require './metrics'
 users = require './users'
 
@@ -29,7 +32,11 @@ app.set 'view engine', 'jade'
 app.use morgan 'dev'
 app.use bodyparser.json()
 app.use bodyparser.urlencoded()
+app.use stylus.middleware
+  src: "#{__dirname}/../public"
+  compile: compile
 app.use '/', express.static "#{__dirname}/../public"
+
 
 app.use session
   secret: 'anythingIsASecret'

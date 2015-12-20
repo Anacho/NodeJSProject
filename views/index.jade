@@ -4,8 +4,12 @@ block head
   script(src="/js/jquery-2.1.4.min.js")
   script(src="/js/bootstrap.min.js")
   link(rel="stylesheet", href="/css/bootstrap.min.css")
+  script(type="text/javascript" src="/js/d3.js" charset="utf-8")
   
-block content   
+  style 
+    include style.css
+    
+block content
   div.container
     header.row.page-header
       h1.col-md-10 Your Metrics
@@ -15,21 +19,40 @@ block content
       h2 Welcome #{username} to our website
       form.form-inline(action='/metric')
         input#get-metrics.btn.btn-success(type='submit', value='Display your metrics')
-       
+    
+    div.chart
+    
   script
     :coffee-script
       $('#get-metrics').click (e) ->
         e.preventDefault()
-        $.getJSON '/metrics.json/#{username}', {}, (metrics) ->
-          console.log metrics
+        
+        # Get all the metrics of the user
+        $.getJSON '/metrics.json/#{username}', {}, (data) ->
+          console.log data
           $('#content').empty()
-          c = ""
-          for metric in metrics 
-            console.log metric.timestamp
-            c += "<p>timestamp: #{metric.timestamp}<br/>value: #{metric.value}</p>"
-          console.log c
-          $('#contentVue').append c
-      
+          
+          # Array of metrics
+          items = []
+          for met in data.metric 
+            a = new Date met.timestamp
+            year = a.getFullYear()
+            month = a.getMonth()
+            date = a.getDate()
+            hour = a.getHours()
+            min = a.getMinutes()
+            sec = a.getSeconds()
+            time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec
+            items.push met.value
+          
+          # D3 display of all the metrics
+          d3.select(".chart")
+            .selectAll("div")
+              .data(items)
+            .enter().append("div")
+              .style "width", (d) ->  d * 10 + "px"
+              .text (d) -> d
+                    
       $('#save-metrics').click (e) ->
         $('#contentSave').empty()
         c = ""
