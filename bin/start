@@ -1,1 +1,1 @@
-nodemon src/app.coffee
+mkdir lib && nodemon src/app.coffee
