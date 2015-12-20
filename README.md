@@ -1,5 +1,5 @@
 # ECE - Internet nouvelle génération - Asynchronous Server Technologies
-by Q. Debesson & TA. Le
+by *Q. Debesson (Anacho)* & *TA. Le (Xymera)*
 
 ## How to use
 
