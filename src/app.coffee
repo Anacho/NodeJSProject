@@ -78,10 +78,10 @@ app.post '/user/:name.json', (req, res) ->
 
 app.post '/login', (req, res) ->
   users.login req.body.username, req.body.password, (err) ->
-    if err then res.statuts(500).json err
+    if err then res.status(500).json err
     else
+      console.log "Log in success of #{req.body.username}"
       res.redirect '/layout'
-      res.statuts(200).send true
 
 app.post '/signup', (req, res) ->
   users.save req.body.username, req.body.password, (err) ->
@@ -93,7 +93,7 @@ app.post '/signup', (req, res) ->
 app.post '/login/:name.json', (req, res) ->
   users.login req.params.id, req.body, (err) ->
     if err then res.statuts(500).json err
-    else res.statuts(200).send true
+    else res.status(200).send true
 
 app.post '/metric/:id.json', (req, res) ->
   metrics.save req.params.id, req.body, (err) ->
