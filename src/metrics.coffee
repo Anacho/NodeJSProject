@@ -15,7 +15,7 @@ module.exports =
       [_, _id, _timestamp] = data.key.split ':'
       [ _value] = data.value.split ':'
       metrics.push id: _id, value: _value, timestamp: _timestamp*1
-      
+
         ###
         date =
         date: new Date(_timestamp*1)

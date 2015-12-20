@@ -69,6 +69,9 @@ app.get '/hello/:name', (req, res) ->
 app.get '/signup', (req, res) ->
   res.render 'signup'
 
+app.get '/metric', (req, res) ->
+  res.render 'addmetric'
+
 app.get '/login', (req, res) ->
   res.render 'login'
 
@@ -126,8 +129,11 @@ app.post '/login/:name.json', (req, res) ->
     if err then res.status(500).json err
     else res.status(200).send true
 
-app.post '/metric/:id.json', (req, res) ->
-  metrics.save req.params.id, req.body, (err) ->
+app.post '/metric', (req, res) ->
+  metric =
+    value: req.body.value
+    timestamp: new Date(req.body.date).getTime()
+  metrics.save req.body.username, metric, (err) ->
     if err then res.status(500).json err
     else res.status(200).send "Metrics saved"
 

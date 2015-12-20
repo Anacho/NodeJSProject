@@ -3,21 +3,31 @@ extend layout
 block head
   script(type="text/javascript" src="js/jquery-2.1.4.min.js" charset="utf-8")
   script(type="text/javascript" src="js/bootstrap.min.js" charset="utf-8")
+  
+  //allow format date in firefox
+  // cdn for modernizr, if you haven't included it already
+  script(src='http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js')
+  // polyfiller file to detect and load polyfills
+  script(src='http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js')
+  script.
+    webshims.setOptions('waitReady', false);
+    webshims.setOptions('forms-ext', {types: 'datetime-local'});
+    webshims.polyfill('forms forms-ext');
+  
   link(rel='stylesheet', href='/css/bootstrap.min.css')
   
 block content
   div.container
     h1 Add metrics
     hr
-    form#login.col-md-6(action='/addmetric', method="post")
+    form#login.col-md-6(action='/metric', method="post")
+      .form-group
+        label Username:
+        input.form-control#username(type='text', name="username", placeholder="Username")
       .form-group
         label Value:
-        input.form-control#addM_value(type='text', name="username", placeholder="Username")
+        input.form-control#value(type='text', name="value", placeholder="Value")
       .form-group
         label Date:
-        input.form-control#addM_date(type='date', name="date")
-      button.btn.btn-success(type='submit', href='/login') Login
-      
-      hr
-      p Do not have an account? Create one
-      a.btn.btn-primary(href='/signup') Sign Up
+        input.form-control#date(type='datetime-local', name="date")
+      button.btn.btn-success(type='submit', href='/metric') Add metric
