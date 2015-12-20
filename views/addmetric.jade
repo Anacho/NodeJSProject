@@ -1,0 +1,23 @@
+extend layout
+
+block head
+  script(type="text/javascript" src="js/jquery-2.1.4.min.js" charset="utf-8")
+  script(type="text/javascript" src="js/bootstrap.min.js" charset="utf-8")
+  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  
+block content
+  div.container
+    h1 Add metrics
+    hr
+    form#login.col-md-6(action='/addmetric', method="post")
+      .form-group
+        label Value:
+        input.form-control#addM_value(type='text', name="username", placeholder="Username")
+      .form-group
+        label Date:
+        input.form-control#addM_date(type='date', name="date")
+      button.btn.btn-success(type='submit', href='/login') Login
+      
+      hr
+      p Do not have an account? Create one
+      a.btn.btn-primary(href='/signup') Sign Up
