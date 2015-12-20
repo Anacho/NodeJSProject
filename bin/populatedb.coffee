@@ -7,6 +7,7 @@ exec "rm -rf #{__dirname}/../db/metrics && mkdir #{__dirname}/../db/metrics", (e
 ###
   # Require after rm and mkdir or DB is deleted once in callback
 metrics = require '../src/metrics'
+users = require '../src/users'
 
 console.log 'DB deleted'
 console.log 'Creating metrics'
@@ -50,6 +51,15 @@ met = [
       value: 20
     ]
 ]
+
+console.log "Creating user \'admin\' with password \'password\'..."
+user =
+  username: "admin"
+  password: "aaa"
+
+console.log "Saving user"
+users.save user.username, user.password, (err) ->
+  return next err if err
 
 for metric in met
   console.log "Saving..."
