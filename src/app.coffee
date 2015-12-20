@@ -33,7 +33,7 @@ app.use session
 
 #GET
 app.get '/', (req, res) ->
-  res.render 'login',
+  res.render 'index',
     title: 'Node JS Project',
 ###
 app.get '/myroute', (req, res) ->
@@ -42,6 +42,9 @@ app.use router
 ###
 app.get '/hello/:name', (req, res) ->
   res.status(200).send "Hello #{req.params.name}"
+
+app.get '/hello', (req, res) ->
+  res.status(200).send "Hi everyonee !!!"
 
 app.get '/metrics.json', (req, res) ->
   res.status(200).send metrics.get((err) ->
@@ -55,22 +58,6 @@ app.get '/metrics.json/:id', (req, res) ->
     res.writeHead 200, 'Content-Type': 'application/json'
     res.end JSON.stringify response
 
-
-app.get '/login', (req, res) ->
-  username = "toto"
-  user =  users.get(username, (err) ->
-       if err then res.status(500).json err)
-  res.status(200).send user
-
-app.get '/signin', (req, res) ->
-  username = "toto"
-  password = "test"
-  name = "Toto"
-  email = "test@test.fr"
-  users.save username, password, name, email, (err) ->
-    if err then res.status(500).json err
-    else res.status(200).send "User saved"
-
 app.get '/delete/:username', (req, res) ->
   res.status(200).send users.remove(req.params.username, (err) ->
     if err
@@ -78,10 +65,30 @@ app.get '/delete/:username', (req, res) ->
     console.log 'Great success dear leader!'
     return)
 
+app.get '/signup', (req, res) ->
+  res.render 'signup'
+
+app.get '/login', (req, res) ->
+  res.render 'login'
+
 app.post '/user/:name.json', (req, res) ->
   users.save req.params.id, req.body, (err) ->
     if err then res.status(500).json err
     else res.status(200).send "User saved"
+
+app.post '/login', (req, res) ->
+  users.login req.body.username, req.body.password, (err) ->
+    if err then res.statuts(500).json err
+    else
+      res.redirect 'hello'
+      res.statuts(200).send true
+
+app.post '/signup', (req, res) ->
+  users.save req.body.username, req.body.password, (err) ->
+    if err then res.status(500).json err
+    else
+      console.log "save user #{req.body.username}"
+      res.redirect 'hello'
 
 app.post '/login/:name.json', (req, res) ->
   users.login req.params.id, req.body, (err) ->

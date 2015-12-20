@@ -1,0 +1,29 @@
+extend layout
+
+block head
+  script(type="text/javascript" src="js/jquery-2.1.4.min.js" charset="utf-8")
+  script(type="text/javascript" src="js/bootstrap.min.js" charset="utf-8")
+  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  
+block content
+  div.container
+    h1 Please login to your account
+    hr      
+    form#signin.col-md-6(action='/signup', method="post")
+      .form-group
+        label Name
+        input.form-control#signin_name(type='text', name="name", placeholder="Name")
+      .form-group
+        label Username
+        input.form-control#signin_username(type='text', name="username", placeholder="Username")
+      .form-group
+        label Email
+        input.form-control#signin_email(type='text', name="email", placeholder="Email")
+      .form-group
+        label Password
+        input.form-control#signin_pwd(type='password', name="password", placeholder="Password")
+      button.btn.btn-success(type='submit', href='/signup') Sign Up
+      
+      hr
+      p Already have an account ?
+      a.btn.btn-primary(href='/signup') Log in
