@@ -22,7 +22,8 @@
     "levelup": "^1.3.1",
     "morgan": "^1.6.1",
     "nodemon": "^1.8.1",
-    "socket.io": "^1.3.7"
+    "socket.io": "^1.3.7",
+    "stylus": "^0.53.0"
   },
   "devDependencies": {
     "test-module": "*"

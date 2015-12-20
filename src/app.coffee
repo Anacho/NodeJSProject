@@ -1,17 +1,24 @@
 express = require 'express'
-metrics = require './metrics'
-users = require './users'
 morgan = require 'morgan'
 bodyparser = require 'body-parser'
 session = require 'express-session'
 levelStore = require('level-session-store')(session)
 
+metrics = require './metrics'
+users = require './users'
+
 app = express()
 router = express.Router()
 
-middleware = (req, res, next) ->
-  console.log "#{req.method} on #{req.url}"
-  next()
+express = require 'express'
+morgan = require 'morgan'
+bodyparser = require 'body-parser'
+session = require 'express-session'
+LevelStore = require('level-session-store')(session)
+app = express()
+
+metrics = require './metrics'
+users = require './users'
 
 # SETS
 app.set 'port', 1889
@@ -19,10 +26,26 @@ app.set 'views', "#{__dirname}/../views"
 app.set 'view engine', 'jade'
 
 #USE
-app.use require('body-parser')()
-app.use middleware
 app.use morgan 'dev'
+app.use bodyparser.json()
+app.use bodyparser.urlencoded()
 app.use '/', express.static "#{__dirname}/../public"
+
+app.use session
+  secret: 'anythingIsASecret'
+  store: new LevelStore "#{__dirname}/../db/sessions"
+  resave: true
+  saveUninitialized: true
+
+authCheck = (req, res, next) ->
+  console.log "#{req.session.loggedIn}"
+  unless req.session.loggedIn == true
+    res.redirect '/login'
+  else
+    next()
+
+
+
 ###
 app.use session
   secret: 'MyAppSecret'
@@ -33,7 +56,7 @@ app.use session
 
 #GET
 app.get '/', (req, res) ->
-  res.render 'index',
+  res.render 'login',
     title: 'Node JS Project',
 ###
 app.get '/myroute', (req, res) ->
@@ -49,8 +72,13 @@ app.get '/signup', (req, res) ->
 app.get '/login', (req, res) ->
   res.render 'login'
 
-app.get '/layout', (req, res) ->
-  res.render 'layout'
+app.get '/index', (req, res) ->
+  res.render 'index'
+
+app.get '/logout', (req, res) ->
+  delete req.session.connected
+  delete req.session.username
+  res.redirect '/login'
 
 app.get '/metrics.json', (req, res) ->
   res.status(200).send metrics.get((err) ->
@@ -82,7 +110,9 @@ app.post '/login', (req, res) ->
     unless req.body.password == data.password
       res.redirect '/login'
     else
-      res.redirect '/'
+      req.session.connected = true
+      req.session.username = data.name
+      res.redirect "/index/"
 
 app.post '/signup', (req, res) ->
   users.save req.body.username, req.body.password, (err) ->

@@ -7,9 +7,13 @@ block head
   
 block content   
   div.container
-    h1 NodeJSProject Metrics
-    hr
-    h2 Welcome to our website
+    header.row.page-header
+      h1.col-md-10 Your Metrics
+      div.col-md-2
+        a.btn.btn-primary(href='/logout' id="logout") Log Out
+    section.row
+      h2 Welcome to our website
+    footer.row
        
   script
     :coffee-script
