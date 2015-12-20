@@ -22,13 +22,11 @@ module.exports =
     rs.on 'close', -> callback null, user
 
 ###
-  login: (name, password, callback) ->
-    this.get name, (err, data) ->
-      console.log "fonction get : #{data}"
-      
-      if password == data.user.password
-        console.log "true"
-        true
-      else
-        console.log "false"
-        false###
+  login: (name, password) ->
+    user = {}
+    this.get(name, (user) ->
+      if(password == user.password)
+        return true
+      false
+    )
+###
