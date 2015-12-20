@@ -3,11 +3,10 @@ extend layout
 block head 
   script(src="/js/jquery-2.1.4.min.js")
   script(src="/js/bootstrap.min.js")
-  link(rel="stylesheet", href="/css/bootstrap.min.css")
   script(type="text/javascript" src="/js/d3.js" charset="utf-8")
-  
-  style 
-    include style.css
+  link(rel="stylesheet", href="/css/bootstrap.min.css")
+  style
+    include ../lib/style.css
     
 block content
   div.container
@@ -17,8 +16,11 @@ block content
         a.btn.btn-primary(href='/logout' id="logout") Log Out
     section.row
       h2 Welcome #{username} to our website
-      form.form-inline(action='/metric')
-        input#get-metrics.btn.btn-success(type='submit', value='Display your metrics')
+      form.form(action='/metric')
+        .form-group
+          input#get-metrics.btn.btn-success(type='submit', value='Display your metrics')
+        .form-group
+          input#add-metrics.btn.btn-success(type='submit', value='Add a metric', href="/metric")
     
     div.chart
     
@@ -44,14 +46,16 @@ block content
             sec = a.getSeconds()
             time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec
             items.push met.value
-          
+                    
           # D3 display of all the metrics
-          d3.select(".chart")
+          bar = d3.select(".chart")
             .selectAll("div")
               .data(items)
-            .enter().append("div")
+            .enter()
+          bar.append("p")
               .style "width", (d) ->  d * 10 + "px"
               .text (d) -> d
+          
                     
       $('#save-metrics').click (e) ->
         $('#contentSave').empty()

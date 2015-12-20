@@ -19,7 +19,7 @@ LevelStore = require('level-session-store')(session)
 app = express()
 compile = (str, path) ->
   stylus(str).set('filename', path).use nib()
-  
+
 metrics = require './metrics'
 users = require './users'
 
@@ -134,12 +134,13 @@ app.post '/login/:name.json', (req, res) ->
     if err then res.status(500).json err
     else res.status(200).send true
 
-app.post '/metric', (req, res) ->
+app.post '/metric', authCheck, (req, res) ->
   metric = []
   metric.push value: req.body.value, timestamp: new Date(req.body.date).getTime()
   metrics.save req.body.username, metric, (err) ->
     if err then res.status(500).json err
-    else res.status(200).send "Metrics saved"
+    else
+      res.redirect "/index/#{req.session.username}"
 
 app.listen app.get('port'), () ->
   console.log "listening on #{app.get 'port'}"
