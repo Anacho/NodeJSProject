@@ -130,9 +130,8 @@ app.post '/login/:name.json', (req, res) ->
     else res.status(200).send true
 
 app.post '/metric', (req, res) ->
-  metric =
-    value: req.body.value
-    timestamp: new Date(req.body.date).getTime()
+  metric = []
+  metric.push value: req.body.value, timestamp: new Date(req.body.date).getTime()
   metrics.save req.body.username, metric, (err) ->
     if err then res.status(500).json err
     else res.status(200).send "Metrics saved"
