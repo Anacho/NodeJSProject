@@ -7,18 +7,12 @@ block head
   
 block content
   div.container
-    h1 Please login to your account
+    h1 Please create your account
     hr      
     form#signin.col-md-6(action='/signup', method="post")
       .form-group
-        label Name
-        input.form-control#signin_name(type='text', name="name", placeholder="Name")
-      .form-group
         label Username
         input.form-control#signin_username(type='text', name="username", placeholder="Username")
-      .form-group
-        label Email
-        input.form-control#signin_email(type='text', name="email", placeholder="Email")
       .form-group
         label Password
         input.form-control#signin_pwd(type='password', name="password", placeholder="Password")
