@@ -12,22 +12,25 @@ block content
       div.col-md-2
         a.btn.btn-primary(href='/logout' id="logout") Log Out
     section.row
-      h2 Welcome to our website
-    footer.row
+      h2 Welcome #{username} to our website
+      form.form-inline(action='/metric')
+        input#get-metrics.btn.btn-success(type='submit', value='Display your metrics')
        
   script
     :coffee-script
       $('#get-metrics').click (e) ->
         e.preventDefault()
-        $.getJSON '/metrics.json', (metrics) ->
+        $.getJSON '/metrics.json/#{username}', {}, (metrics) ->
+          console.log metrics
           $('#content').empty()
           c = ""
           for metric in metrics 
+            console.log metric.timestamp
             c += "<p>timestamp: #{metric.timestamp}<br/>value: #{metric.value}</p>"
+          console.log c
           $('#contentVue').append c
       
       $('#save-metrics').click (e) ->
         $('#contentSave').empty()
         c = ""
         c += ""
-      

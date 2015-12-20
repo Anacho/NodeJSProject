@@ -63,20 +63,18 @@ app.get '/myroute', (req, res) ->
   #route logic
 app.use router
 ###
-app.get '/hello/:name', (req, res) ->
-  res.status(200).send "Hello #{req.params.name}"
 
 app.get '/signup', (req, res) ->
-  res.render 'signup'
+  res.render 'signup', title: 'Sign Up'
 
 app.get '/metric', (req, res) ->
   res.render 'addmetric'
 
 app.get '/login', (req, res) ->
-  res.render 'login'
+  res.render 'login', title: 'Log In'
 
-app.get '/index', (req, res) ->
-  res.render 'index'
+app.get '/index/:id', (req, res) ->
+  res.render 'index', title: 'NodeJSProject', username: "#{req.params.id}"
 
 app.get '/logout', (req, res) ->
   delete req.session.connected
@@ -115,7 +113,7 @@ app.post '/login', (req, res) ->
     else
       req.session.connected = true
       req.session.username = data.name
-      res.redirect "/index/"
+      res.redirect "/index/#{req.session.username}"
 
 app.post '/signup', (req, res) ->
   users.save req.body.username, req.body.password, (err) ->
